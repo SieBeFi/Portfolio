@@ -6,39 +6,103 @@
   <title>Portfolio</title>
   <meta name="description" content="Portfolio starter page">
   <style>
-    body{font-family:system-ui,Segoe UI,Helvetica,Arial,sans-serif;margin:2rem;color:#111}
-    header{max-width:900px;margin:0 auto 2rem}
-    nav a{color:#0366d6;text-decoration:none;margin-right:.5rem}
+    *, *::before, *::after { box-sizing: border-box; }
+
+    html, body {
+      margin: 0;
+      min-height: 100%;
+    }
+
+    body {
+      font-family: system-ui, Segoe UI, Helvetica, Arial, sans-serif;
+      color: #111;
+      position: relative;
+      overflow-x: hidden;
+    }
+
+    #particle-canvas {
+      position: fixed;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      z-index: 0;
+      pointer-events: none;
+      background: #fff;
+    }
+
+    .page-content {
+      position: relative;
+      z-index: 1;
+      padding: 2rem;
+      max-width: 900px;
+      margin: 0 auto;
+    }
+
+    header {
+      margin-bottom: 2rem;
+    }
+
+    nav a {
+      color: #111;
+      text-decoration: underline;
+      text-underline-offset: 3px;
+      margin-right: 0.5rem;
+    }
+
+    nav a:hover {
+      color: #555;
+    }
+
+    section {
+      margin-bottom: 2.5rem;
+      background: rgba(255, 255, 255, 0.75);
+      backdrop-filter: blur(4px);
+      padding: 1.25rem 1.5rem;
+      border-radius: 8px;
+      border: 1px solid rgba(0, 0, 0, 0.06);
+    }
+
+    footer {
+      margin-top: 3rem;
+      color: #444;
+      font-size: 0.9rem;
+    }
   </style>
 </head>
 <body>
-  <header>
-    <h1>Welcome to my portfolio</h1>
-    <p>Starter HTML file — edit this to begin building your site.</p>
-    <nav>
-      <a href="#about">About</a> |
-      <a href="#projects">Projects</a> |
-      <a href="#contact">Contact</a>
-    </nav>
-  </header>
-  <main>
-    <section id="about">
-      <h2>About</h2>
-      <p>Write a short bio here.</p>
-    </section>
-    <section id="projects">
-      <h2>Projects</h2>
-      <ul>
-        <li>Project 1 — short description.</li>
-      </ul>
-    </section>
-    <section id="contact">
-      <h2>Contact</h2>
-      <p>Email: <a href="mailto:you@example.com">you@example.com</a></p>
-    </section>
-  </main>
-  <footer>
-    <p>&copy; 2026</p>
-  </footer>
+  <canvas id="particle-canvas" aria-hidden="true"></canvas>
+
+  <div class="page-content">
+    <header>
+      <h1>Welcome to my portfolio</h1>
+      <p>Starter HTML file — edit this to begin building your site.</p>
+      <nav>
+        <a href="#about">About</a> |
+        <a href="#projects">Projects</a> |
+        <a href="#contact">Contact</a>
+      </nav>
+    </header>
+    <main>
+      <section id="about">
+        <h2>About</h2>
+        <p>Write a short bio here.</p>
+      </section>
+      <section id="projects">
+        <h2>Projects</h2>
+        <ul>
+          <li>Project 1 — short description.</li>
+        </ul>
+      </section>
+      <section id="contact">
+        <h2>Contact</h2>
+        <p>Email: <a href="mailto:you@example.com">you@example.com</a></p>
+      </section>
+    </main>
+    <footer>
+      <p>&copy; 2026</p>
+    </footer>
+  </div>
+
+  <script src="js/particles-background.js"></script>
 </body>
 </html>
