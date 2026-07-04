@@ -452,48 +452,109 @@ footer {
   background: rgba(140, 170, 255, 0.2);
 }
 
-/* ---------- Projects ---------- */
-.project-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-  gap: 1.25rem;
+/* ---------- Projects: 3D CSS carousel ---------- */
+.carousel-hint {
+  color: var(--muted);
+  margin: 0 0 1rem;
+  font-size: 0.92rem;
 }
 
-.project-card {
-  padding: 1.25rem;
-  border-radius: 14px;
-  border: 1px solid var(--card-border);
-  background: rgba(140, 170, 255, 0.05);
-  transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease;
-}
-
-.project-card:hover {
-  border-color: var(--accent);
-  box-shadow: 0 16px 40px rgba(140, 170, 255, 0.28);
-}
-
-.project-thumb {
-  height: 120px;
-  border-radius: 10px;
-  margin-bottom: 1rem;
-  background: linear-gradient(135deg, rgba(140, 170, 255, 0.4), rgba(185, 140, 255, 0.25));
+.carousel {
+  --radius: 340px;
   position: relative;
+  width: 100%;
+  height: 380px;
   overflow: hidden;
 }
 
-.project-thumb::after {
-  content: "";
+.slider {
   position: absolute;
-  inset: 0;
-  background: radial-gradient(120px 80px at var(--mx, 50%) var(--my, 50%), rgba(255,255,255,0.35), transparent 60%);
-  opacity: 0;
-  transition: opacity 0.2s ease;
+  top: 50%;
+  left: 50%;
+  width: 220px;
+  height: 280px;
+  margin: -140px 0 0 -110px; /* center the ring */
+  transform-style: preserve-3d;
+  animation: autoRun 32s linear infinite;
 }
 
-.project-card:hover .project-thumb::after { opacity: 1; }
+/* Pause the auto-rotation while the user is inspecting a card. */
+.carousel:hover .slider { animation-play-state: paused; }
 
-.project-card h3 { margin: 0 0 0.5rem; color: #fff; }
-.project-card p { margin: 0 0 1rem; color: var(--muted); font-size: 0.92rem; line-height: 1.6; }
+/* When JS takes over (prev/next), swap to a controlled transform. */
+.slider.manual {
+  animation: none;
+  transform: perspective(1200px) rotateX(-8deg) rotateY(var(--rot, 0deg));
+  transition: transform 0.7s cubic-bezier(0.35, 0.1, 0.2, 1);
+}
+
+.slider .item {
+  position: absolute;
+  inset: 0;
+  transform: rotateY(calc((var(--position) - 1) * (360 / var(--quantity)) * 1deg))
+    translateZ(var(--radius));
+}
+
+@keyframes autoRun {
+  from { transform: perspective(1200px) rotateX(-8deg) rotateY(0deg); }
+  to { transform: perspective(1200px) rotateX(-8deg) rotateY(360deg); }
+}
+
+.carousel-card {
+  width: 100%;
+  height: 100%;
+  padding: 1.1rem;
+  border-radius: 14px;
+  border: 1px solid var(--card-border);
+  background: linear-gradient(180deg, rgba(22, 30, 70, 0.92), rgba(12, 16, 44, 0.92));
+  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.45);
+  display: flex;
+  flex-direction: column;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.carousel-card:hover {
+  border-color: var(--accent);
+  box-shadow: 0 24px 60px rgba(140, 170, 255, 0.4);
+}
+
+.carousel-thumb {
+  height: 96px;
+  border-radius: 10px;
+  margin-bottom: 0.85rem;
+  display: grid;
+  place-items: center;
+  font-weight: 800;
+  font-size: 1.6rem;
+  color: rgba(255, 255, 255, 0.85);
+  background: linear-gradient(135deg, rgba(140, 170, 255, 0.55), rgba(185, 140, 255, 0.4));
+}
+
+.carousel-card h3 { margin: 0 0 0.4rem; color: #fff; font-size: 1.05rem; }
+.carousel-card p { margin: 0 0 0.75rem; color: var(--muted); font-size: 0.82rem; line-height: 1.5; }
+
+/* ---------- Carousel controls ---------- */
+.carousel-controls {
+  display: flex;
+  justify-content: center;
+  gap: 1rem;
+  margin-top: 1.25rem;
+}
+
+.car-btn {
+  width: 46px;
+  height: 46px;
+  border-radius: 50%;
+  border: 1px solid var(--card-border);
+  background: rgba(140, 170, 255, 0.08);
+  color: var(--accent);
+  font-size: 1.2rem;
+  cursor: pointer;
+  transition: transform 0.15s ease, background 0.2s ease;
+}
+
+.car-btn:hover { transform: translateY(-2px); background: rgba(140, 170, 255, 0.2); }
+.car-btn:active { transform: translateY(0); }
 
 .project-tags {
   display: flex;
@@ -648,6 +709,9 @@ footer {
   .about-grid,
   .skills-grid { grid-template-columns: 1fr; }
 
+  .carousel { --radius: 240px; height: 340px; }
+  .slider { width: 180px; height: 240px; margin: -120px 0 0 -90px; }
+
   .nav-toggle { display: flex; }
 
   .nav-links {
@@ -672,4 +736,5 @@ footer {
   html { scroll-behavior: auto; }
   .reveal { opacity: 1; transform: none; transition: none; }
   .brand-dot, .cursor-blink, .scroll-cue span { animation: none; }
+  .slider { animation: none; transform: perspective(1200px) rotateX(-8deg) rotateY(0deg); }
 }

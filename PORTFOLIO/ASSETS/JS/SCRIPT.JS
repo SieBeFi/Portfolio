@@ -189,7 +189,7 @@
     initNavbarState();
     initSkillBars();
     initTilt();
-    initProjectGlow();
+    initCarousel();
     initContactForm();
     initBackToTop();
     initMobileMenu();
@@ -348,16 +348,30 @@
     });
   }
 
-  /* Move the highlight glow on project thumbnails with the cursor. */
-  function initProjectGlow() {
-    document.querySelectorAll(".project-card").forEach((card) => {
-      const thumb = card.querySelector(".project-thumb");
-      if (!thumb) return;
-      card.addEventListener("mousemove", function (e) {
-        const r = thumb.getBoundingClientRect();
-        thumb.style.setProperty("--mx", e.clientX - r.left + "px");
-        thumb.style.setProperty("--my", e.clientY - r.top + "px");
-      });
+  /* Prev/next controls for the 3D project carousel. Clicking switches the
+     slider from CSS auto-rotation to a controlled (manual) rotation. */
+  function initCarousel() {
+    const slider = document.getElementById("slider");
+    const prev = document.getElementById("car-prev");
+    const next = document.getElementById("car-next");
+    if (!slider || !prev || !next) return;
+
+    const quantity =
+      parseFloat(slider.style.getPropertyValue("--quantity")) || 6;
+    const step = 360 / quantity;
+    let rot = 0;
+
+    function rotate(delta) {
+      slider.classList.add("manual");
+      rot += delta;
+      slider.style.setProperty("--rot", rot + "deg");
+    }
+
+    next.addEventListener("click", function () {
+      rotate(-step);
+    });
+    prev.addEventListener("click", function () {
+      rotate(step);
     });
   }
 
