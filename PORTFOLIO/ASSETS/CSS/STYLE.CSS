@@ -1,0 +1,113 @@
+/* Dark theme + starry particle background styling for the portfolio. */
+
+:root {
+  --bg-top: #050816;
+  --bg-bottom: #0b1030;
+  --text: #e8ecff;
+  --muted: #aab3d8;
+  --accent: #8caaff;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  min-height: 100vh;
+  font-family: system-ui, "Segoe UI", Helvetica, Arial, sans-serif;
+  color: var(--text);
+  background: radial-gradient(
+      1200px 800px at 70% -10%,
+      #131a45 0%,
+      transparent 60%
+    ),
+    linear-gradient(180deg, var(--bg-top) 0%, var(--bg-bottom) 100%);
+  background-attachment: fixed;
+}
+
+/* Full-screen canvas sits behind all content. */
+#bg-stars {
+  position: fixed;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  z-index: -1;
+  display: block;
+  pointer-events: none;
+}
+
+header,
+main,
+footer {
+  position: relative;
+  z-index: 1;
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 0 1.5rem;
+}
+
+header {
+  padding-top: 4rem;
+  padding-bottom: 2rem;
+}
+
+header h1 {
+  font-size: clamp(2rem, 5vw, 3.25rem);
+  margin: 0 0 0.5rem;
+  letter-spacing: -0.02em;
+  text-shadow: 0 2px 24px rgba(140, 170, 255, 0.35);
+}
+
+header p {
+  color: var(--muted);
+  margin: 0 0 1.25rem;
+}
+
+nav a {
+  color: var(--accent);
+  text-decoration: none;
+  margin-right: 0.5rem;
+  transition: color 0.15s ease;
+}
+
+nav a:hover {
+  color: #ffffff;
+  text-decoration: underline;
+}
+
+main section {
+  background: rgba(16, 22, 54, 0.55);
+  border: 1px solid rgba(140, 170, 255, 0.18);
+  border-radius: 14px;
+  padding: 1.5rem 1.75rem;
+  margin: 0 0 1.5rem;
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+}
+
+main section h2 {
+  margin-top: 0;
+  color: #ffffff;
+}
+
+main a {
+  color: var(--accent);
+}
+
+footer {
+  color: var(--muted);
+  text-align: center;
+  padding: 2rem 1.5rem 3rem;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  * {
+    scroll-behavior: auto;
+  }
+}
