@@ -9,34 +9,212 @@
 </head>
 <body>
   <canvas id="bg-stars" aria-hidden="true"></canvas>
-  <header>
-    <h1>Welcome to my portfolio</h1>
-    <p>Starter HTML file — edit this to begin building your site.</p>
-    <nav>
-      <a href="#about">About</a> |
-      <a href="#projects">Projects</a> |
-      <a href="#contact">Contact</a>
-    </nav>
+
+  <!-- Sticky glassy navbar with active-section highlighting + scroll progress bar -->
+  <div id="scroll-progress" aria-hidden="true"></div>
+  <nav class="navbar" id="navbar">
+    <a href="#hero" class="brand">
+      <span class="brand-dot"></span>
+      <!-- PLACEHOLDER: your name / logo text -->
+      <span data-placeholder>Your&nbsp;Name</span>
+    </a>
+    <button class="nav-toggle" id="nav-toggle" aria-label="Toggle navigation" aria-expanded="false">
+      <span></span><span></span><span></span>
+    </button>
+    <ul class="nav-links" id="nav-links">
+      <li><a href="#about" class="nav-link">About</a></li>
+      <li><a href="#skills" class="nav-link">Skills</a></li>
+      <li><a href="#projects" class="nav-link">Projects</a></li>
+      <li><a href="#contact" class="nav-link">Contact</a></li>
+    </ul>
+  </nav>
+
+  <!-- HERO -->
+  <header id="hero" class="hero">
+    <p class="eyebrow reveal" data-placeholder>Hi, my name is</p>
+    <h1 class="hero-title reveal" data-placeholder>Your Name</h1>
+    <!-- Typewriter cycles through the roles listed in data-words -->
+    <h2 class="hero-subtitle reveal">
+      I&nbsp;<span id="typewriter" class="typewriter"
+        data-words="build things for the web|design interfaces|write clean code|solve problems"></span><span class="cursor-blink" aria-hidden="true">|</span>
+    </h2>
+    <p class="hero-lead reveal" data-placeholder>
+      A short, punchy one-liner about who you are and what you do. Replace this text
+      with your own introduction.
+    </p>
+    <div class="hero-actions reveal">
+      <a href="#projects" class="btn btn-primary">View my work</a>
+      <a href="#contact" class="btn btn-ghost">Get in touch</a>
+    </div>
+    <a href="#about" class="scroll-cue" aria-label="Scroll down">
+      <span></span>
+    </a>
   </header>
+
   <main>
-    <section id="about">
-      <h2>About</h2>
-      <p>Write a short bio here.</p>
+    <!-- ABOUT -->
+    <section id="about" class="section reveal">
+      <h2 class="section-title"><span class="section-index">01.</span> About</h2>
+      <div class="about-grid">
+        <div>
+          <!-- PLACEHOLDER: bio paragraphs -->
+          <p data-placeholder>
+            Write a short bio here. Talk about your background, what you enjoy building,
+            and what you are looking for. Keep it friendly and concise.
+          </p>
+          <p data-placeholder>
+            Add a second paragraph with a highlight or two — a favorite project, a
+            technology you love, or something that makes you, you.
+          </p>
+        </div>
+        <div class="about-card tilt">
+          <div class="avatar" aria-hidden="true">
+            <!-- PLACEHOLDER: replace with an <img> of yourself -->
+            <span data-placeholder>YOU</span>
+          </div>
+          <ul class="fact-list">
+            <li><strong>Location</strong><span data-placeholder>City, Country</span></li>
+            <li><strong>Focus</strong><span data-placeholder>Your focus area</span></li>
+            <li><strong>Status</strong><span data-placeholder>Open to work</span></li>
+          </ul>
+        </div>
+      </div>
     </section>
-    <section id="projects">
-      <h2>Projects</h2>
-      <ul>
-        <li>Project 1 — short description.</li>
-      </ul>
+
+    <!-- SKILLS with animated bars that fill in on scroll -->
+    <section id="skills" class="section reveal">
+      <h2 class="section-title"><span class="section-index">02.</span> Skills</h2>
+      <div class="skills-grid">
+        <div class="skill">
+          <div class="skill-head"><span data-placeholder>Skill one</span><span class="skill-pct">90%</span></div>
+          <div class="bar"><div class="bar-fill" data-level="90"></div></div>
+        </div>
+        <div class="skill">
+          <div class="skill-head"><span data-placeholder>Skill two</span><span class="skill-pct">80%</span></div>
+          <div class="bar"><div class="bar-fill" data-level="80"></div></div>
+        </div>
+        <div class="skill">
+          <div class="skill-head"><span data-placeholder>Skill three</span><span class="skill-pct">70%</span></div>
+          <div class="bar"><div class="bar-fill" data-level="70"></div></div>
+        </div>
+        <div class="skill">
+          <div class="skill-head"><span data-placeholder>Skill four</span><span class="skill-pct">60%</span></div>
+          <div class="bar"><div class="bar-fill" data-level="60"></div></div>
+        </div>
+      </div>
+      <div class="chips">
+        <!-- PLACEHOLDER: quick tag chips -->
+        <span class="chip" data-placeholder>Tag 1</span>
+        <span class="chip" data-placeholder>Tag 2</span>
+        <span class="chip" data-placeholder>Tag 3</span>
+        <span class="chip" data-placeholder>Tag 4</span>
+        <span class="chip" data-placeholder>Tag 5</span>
+      </div>
     </section>
-    <section id="contact">
-      <h2>Contact</h2>
-      <p>Email: <a href="mailto:you@example.com">you@example.com</a></p>
+
+    <!-- PROJECTS as a rotating 3D CSS carousel (inspired by css-3d-carousel) -->
+    <section id="projects" class="section reveal">
+      <h2 class="section-title"><span class="section-index">03.</span> Projects</h2>
+      <p class="carousel-hint" data-placeholder>
+        Auto-rotating 3D carousel — hover to pause.
+      </p>
+      <div class="carousel" id="carousel">
+        <div class="slider" id="slider" style="--quantity: 6">
+          <div class="item" style="--position: 1">
+            <article class="carousel-card">
+              <div class="carousel-thumb" aria-hidden="true"><span>01</span></div>
+              <h3 data-placeholder>Project One</h3>
+              <p data-placeholder>Short description of what this project does.</p>
+              <div class="project-tags"><span data-placeholder>Tech</span><span data-placeholder>Tech</span></div>
+              <div class="project-links"><a href="#" data-placeholder>Live</a><a href="#" data-placeholder>Code</a></div>
+            </article>
+          </div>
+          <div class="item" style="--position: 2">
+            <article class="carousel-card">
+              <div class="carousel-thumb" aria-hidden="true"><span>02</span></div>
+              <h3 data-placeholder>Project Two</h3>
+              <p data-placeholder>Short description of what this project does.</p>
+              <div class="project-tags"><span data-placeholder>Tech</span><span data-placeholder>Tech</span></div>
+              <div class="project-links"><a href="#" data-placeholder>Live</a><a href="#" data-placeholder>Code</a></div>
+            </article>
+          </div>
+          <div class="item" style="--position: 3">
+            <article class="carousel-card">
+              <div class="carousel-thumb" aria-hidden="true"><span>03</span></div>
+              <h3 data-placeholder>Project Three</h3>
+              <p data-placeholder>Short description of what this project does.</p>
+              <div class="project-tags"><span data-placeholder>Tech</span><span data-placeholder>Tech</span></div>
+              <div class="project-links"><a href="#" data-placeholder>Live</a><a href="#" data-placeholder>Code</a></div>
+            </article>
+          </div>
+          <div class="item" style="--position: 4">
+            <article class="carousel-card">
+              <div class="carousel-thumb" aria-hidden="true"><span>04</span></div>
+              <h3 data-placeholder>Project Four</h3>
+              <p data-placeholder>Short description of what this project does.</p>
+              <div class="project-tags"><span data-placeholder>Tech</span><span data-placeholder>Tech</span></div>
+              <div class="project-links"><a href="#" data-placeholder>Live</a><a href="#" data-placeholder>Code</a></div>
+            </article>
+          </div>
+          <div class="item" style="--position: 5">
+            <article class="carousel-card">
+              <div class="carousel-thumb" aria-hidden="true"><span>05</span></div>
+              <h3 data-placeholder>Project Five</h3>
+              <p data-placeholder>Short description of what this project does.</p>
+              <div class="project-tags"><span data-placeholder>Tech</span><span data-placeholder>Tech</span></div>
+              <div class="project-links"><a href="#" data-placeholder>Live</a><a href="#" data-placeholder>Code</a></div>
+            </article>
+          </div>
+          <div class="item" style="--position: 6">
+            <article class="carousel-card">
+              <div class="carousel-thumb" aria-hidden="true"><span>06</span></div>
+              <h3 data-placeholder>Project Six</h3>
+              <p data-placeholder>Short description of what this project does.</p>
+              <div class="project-tags"><span data-placeholder>Tech</span><span data-placeholder>Tech</span></div>
+              <div class="project-links"><a href="#" data-placeholder>Live</a><a href="#" data-placeholder>Code</a></div>
+            </article>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- CONTACT form with placeholder inputs (front-end only, no backend) -->
+    <section id="contact" class="section reveal">
+      <h2 class="section-title"><span class="section-index">04.</span> Contact</h2>
+      <p class="contact-lead" data-placeholder>
+        Have a question or want to work together? Drop a message below.
+      </p>
+      <form id="contact-form" class="contact-form" novalidate>
+        <div class="field">
+          <input type="text" id="name" name="name" placeholder=" " required>
+          <label for="name">Your name</label>
+        </div>
+        <div class="field">
+          <input type="email" id="email" name="email" placeholder=" " required>
+          <label for="email">Your email</label>
+        </div>
+        <div class="field">
+          <textarea id="message" name="message" rows="4" placeholder=" " required></textarea>
+          <label for="message">Your message</label>
+        </div>
+        <button type="submit" class="btn btn-primary">Send message</button>
+        <p id="form-status" class="form-status" role="status" aria-live="polite"></p>
+      </form>
+      <div class="socials">
+        <!-- PLACEHOLDER: social links -->
+        <a href="#" data-placeholder>GitHub</a>
+        <a href="#" data-placeholder>LinkedIn</a>
+        <a href="mailto:you@example.com" data-placeholder>Email</a>
+      </div>
     </section>
   </main>
+
   <footer>
-    <p>&copy; 2026</p>
+    <p>&copy; 2026 <span data-placeholder>Your Name</span>. Built with a starry night.</p>
   </footer>
+
+  <button id="to-top" class="to-top" aria-label="Back to top">&uarr;</button>
+
   <script src="ASSETS/JS/SCRIPT.JS"></script>
 </body>
 </html>

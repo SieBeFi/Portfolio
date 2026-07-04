@@ -169,3 +169,248 @@
   resize();
   requestAnimationFrame(step);
 })();
+
+/* ------------------------------------------------------------------ *
+ * Interactive UI behaviors (typewriter, scroll reveal, active nav,   *
+ * skill bars, tilt cards, contact form, back-to-top, mobile menu).   *
+ * All progressive-enhancement: the page works without JS.            *
+ * ------------------------------------------------------------------ */
+(function () {
+  "use strict";
+
+  const reduceMotion = window.matchMedia(
+    "(prefers-reduced-motion: reduce)"
+  ).matches;
+
+  document.addEventListener("DOMContentLoaded", function () {
+    initTypewriter();
+    initScrollReveal();
+    initActiveNav();
+    initNavbarState();
+    initSkillBars();
+    initTilt();
+    initContactForm();
+    initBackToTop();
+    initMobileMenu();
+  });
+
+  /* Typewriter that cycles through the pipe-separated words. */
+  function initTypewriter() {
+    const el = document.getElementById("typewriter");
+    if (!el) return;
+    const words = (el.dataset.words || "").split("|").filter(Boolean);
+    if (!words.length) return;
+
+    if (reduceMotion) {
+      el.textContent = words[0];
+      return;
+    }
+
+    let wi = 0;
+    let ci = 0;
+    let deleting = false;
+
+    function tick() {
+      const word = words[wi];
+      el.textContent = word.slice(0, ci);
+      let delay = deleting ? 45 : 90;
+
+      if (!deleting && ci === word.length) {
+        deleting = true;
+        delay = 1400;
+      } else if (deleting && ci === 0) {
+        deleting = false;
+        wi = (wi + 1) % words.length;
+        delay = 300;
+      } else {
+        ci += deleting ? -1 : 1;
+      }
+      setTimeout(tick, delay);
+    }
+    tick();
+  }
+
+  /* Fade/slide sections in as they enter the viewport. */
+  function initScrollReveal() {
+    const items = document.querySelectorAll(".reveal");
+    if (!items.length) return;
+
+    if (reduceMotion || !("IntersectionObserver" in window)) {
+      items.forEach((el) => el.classList.add("visible"));
+      return;
+    }
+
+    const io = new IntersectionObserver(
+      function (entries) {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add("visible");
+            io.unobserve(entry.target);
+          }
+        });
+      },
+      { threshold: 0.12 }
+    );
+    items.forEach((el) => io.observe(el));
+  }
+
+  /* Highlight the nav link for the section currently in view. */
+  function initActiveNav() {
+    const links = Array.from(document.querySelectorAll(".nav-link"));
+    if (!links.length || !("IntersectionObserver" in window)) return;
+    const map = new Map();
+    links.forEach((link) => {
+      const id = link.getAttribute("href").slice(1);
+      const section = document.getElementById(id);
+      if (section) map.set(section, link);
+    });
+
+    const io = new IntersectionObserver(
+      function (entries) {
+        entries.forEach((entry) => {
+          const link = map.get(entry.target);
+          if (!link) return;
+          if (entry.isIntersecting) {
+            links.forEach((l) => l.classList.remove("active"));
+            link.classList.add("active");
+          }
+        });
+      },
+      { rootMargin: "-45% 0px -50% 0px" }
+    );
+    map.forEach((_, section) => io.observe(section));
+  }
+
+  /* Solid navbar + scroll progress bar as the page scrolls. */
+  function initNavbarState() {
+    const navbar = document.getElementById("navbar");
+    const progress = document.getElementById("scroll-progress");
+
+    function onScroll() {
+      const y = window.scrollY || window.pageYOffset;
+      if (navbar) navbar.classList.toggle("scrolled", y > 20);
+      if (progress) {
+        const h = document.documentElement.scrollHeight - window.innerHeight;
+        const pct = h > 0 ? (y / h) * 100 : 0;
+        progress.style.width = pct + "%";
+      }
+    }
+    window.addEventListener("scroll", onScroll, { passive: true });
+    onScroll();
+  }
+
+  /* Animate skill bars to their data-level width when visible. */
+  function initSkillBars() {
+    const bars = document.querySelectorAll(".bar-fill");
+    if (!bars.length) return;
+    const fill = (bar) => {
+      bar.style.width = (bar.dataset.level || 0) + "%";
+    };
+    if (!("IntersectionObserver" in window)) {
+      bars.forEach(fill);
+      return;
+    }
+    const io = new IntersectionObserver(
+      function (entries) {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            fill(entry.target);
+            io.unobserve(entry.target);
+          }
+        });
+      },
+      { threshold: 0.4 }
+    );
+    bars.forEach((b) => io.observe(b));
+  }
+
+  /* Subtle 3D tilt toward the cursor on .tilt elements. */
+  function initTilt() {
+    if (reduceMotion) return;
+    const els = document.querySelectorAll(".tilt");
+    els.forEach((el) => {
+      el.style.transformStyle = "preserve-3d";
+      el.addEventListener("mousemove", function (e) {
+        const r = el.getBoundingClientRect();
+        const px = (e.clientX - r.left) / r.width - 0.5;
+        const py = (e.clientY - r.top) / r.height - 0.5;
+        el.style.transform =
+          "perspective(700px) rotateX(" +
+          (-py * 6).toFixed(2) +
+          "deg) rotateY(" +
+          (px * 6).toFixed(2) +
+          "deg) translateY(-4px)";
+      });
+      el.addEventListener("mouseleave", function () {
+        el.style.transform = "";
+      });
+    });
+  }
+
+  /* Front-end-only contact form: validates and shows a confirmation. */
+  function initContactForm() {
+    const form = document.getElementById("contact-form");
+    const status = document.getElementById("form-status");
+    if (!form) return;
+
+    form.addEventListener("submit", function (e) {
+      e.preventDefault();
+      let ok = true;
+      const fields = form.querySelectorAll("input, textarea");
+      fields.forEach((input) => {
+        const field = input.closest(".field");
+        const valid = input.checkValidity() && input.value.trim() !== "";
+        if (field) field.classList.toggle("invalid", !valid);
+        if (!valid) ok = false;
+      });
+
+      if (!ok) {
+        if (status) {
+          status.style.color = "#ff7a90";
+          status.textContent = "Please fill in all fields with a valid email.";
+        }
+        return;
+      }
+
+      if (status) {
+        status.style.color = "";
+        status.textContent = "Thanks! Your message is ready to send.";
+      }
+      form.reset();
+      // NOTE: No backend — wire this up to an email service or API to actually send.
+    });
+  }
+
+  /* Back-to-top button appears after scrolling down. */
+  function initBackToTop() {
+    const btn = document.getElementById("to-top");
+    if (!btn) return;
+    window.addEventListener(
+      "scroll",
+      function () {
+        btn.classList.toggle("show", (window.scrollY || 0) > 500);
+      },
+      { passive: true }
+    );
+    btn.addEventListener("click", function () {
+      window.scrollTo({ top: 0, behavior: reduceMotion ? "auto" : "smooth" });
+    });
+  }
+
+  /* Mobile hamburger menu. */
+  function initMobileMenu() {
+    const toggle = document.getElementById("nav-toggle");
+    const links = document.getElementById("nav-links");
+    if (!toggle || !links) return;
+    toggle.addEventListener("click", function () {
+      const open = links.classList.toggle("open");
+      toggle.setAttribute("aria-expanded", open ? "true" : "false");
+    });
+    links.querySelectorAll("a").forEach((a) => {
+      a.addEventListener("click", function () {
+        links.classList.remove("open");
+        toggle.setAttribute("aria-expanded", "false");
+      });
+    });
+  }
+})();
