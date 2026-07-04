@@ -481,13 +481,6 @@ footer {
 /* Pause the auto-rotation while the user is inspecting a card. */
 .carousel:hover .slider { animation-play-state: paused; }
 
-/* When JS takes over (prev/next), swap to a controlled transform. */
-.slider.manual {
-  animation: none;
-  transform: perspective(1200px) rotateX(-8deg) rotateY(var(--rot, 0deg));
-  transition: transform 0.7s cubic-bezier(0.35, 0.1, 0.2, 1);
-}
-
 .slider .item {
   position: absolute;
   inset: 0;
@@ -532,29 +525,6 @@ footer {
 
 .carousel-card h3 { margin: 0 0 0.4rem; color: #fff; font-size: 1.05rem; }
 .carousel-card p { margin: 0 0 0.75rem; color: var(--muted); font-size: 0.82rem; line-height: 1.5; }
-
-/* ---------- Carousel controls ---------- */
-.carousel-controls {
-  display: flex;
-  justify-content: center;
-  gap: 1rem;
-  margin-top: 1.25rem;
-}
-
-.car-btn {
-  width: 46px;
-  height: 46px;
-  border-radius: 50%;
-  border: 1px solid var(--card-border);
-  background: rgba(140, 170, 255, 0.08);
-  color: var(--accent);
-  font-size: 1.2rem;
-  cursor: pointer;
-  transition: transform 0.15s ease, background 0.2s ease;
-}
-
-.car-btn:hover { transform: translateY(-2px); background: rgba(140, 170, 255, 0.2); }
-.car-btn:active { transform: translateY(0); }
 
 .project-tags {
   display: flex;

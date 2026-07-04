@@ -189,7 +189,6 @@
     initNavbarState();
     initSkillBars();
     initTilt();
-    initCarousel();
     initContactForm();
     initBackToTop();
     initMobileMenu();
@@ -345,33 +344,6 @@
       el.addEventListener("mouseleave", function () {
         el.style.transform = "";
       });
-    });
-  }
-
-  /* Prev/next controls for the 3D project carousel. Clicking switches the
-     slider from CSS auto-rotation to a controlled (manual) rotation. */
-  function initCarousel() {
-    const slider = document.getElementById("slider");
-    const prev = document.getElementById("car-prev");
-    const next = document.getElementById("car-next");
-    if (!slider || !prev || !next) return;
-
-    const quantity =
-      parseFloat(slider.style.getPropertyValue("--quantity")) || 6;
-    const step = 360 / quantity;
-    let rot = 0;
-
-    function rotate(delta) {
-      slider.classList.add("manual");
-      rot += delta;
-      slider.style.setProperty("--rot", rot + "deg");
-    }
-
-    next.addEventListener("click", function () {
-      rotate(-step);
-    });
-    prev.addEventListener("click", function () {
-      rotate(step);
     });
   }
 
